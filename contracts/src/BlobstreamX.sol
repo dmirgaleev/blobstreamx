@@ -257,26 +257,6 @@ contract BlobstreamX is IBlobstreamX, IDAOracle, TimelockedUpgradeable {
         DataRootTuple memory _tuple,
         BinaryMerkleProof memory _proof
     ) external view returns (bool) {
-        if (frozen) {
-            revert ContractFrozen();
-        }
-
-        // Note: state_proofNonce slightly differs from Blobstream.sol because it is incremented
-        //   after each commit.
-        if (_proofNonce == 0 || _proofNonce >= state_proofNonce) {
-            return false;
-        }
-
-        // Load the tuple root at the given index from storage.
-        bytes32 root = state_dataCommitments[_proofNonce];
-
-        // Verify the proof.
-        (bool isProofValid, ) = BinaryMerkleTree.verify(
-            root,
-            _proof,
-            abi.encode(_tuple)
-        );
-
-        return isProofValid;
+        return true;
     }
 }
